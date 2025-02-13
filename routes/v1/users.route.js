@@ -17,7 +17,7 @@ const validateCreateUser = (req, res, next) => {
 };
 
 router.route("/").post(validateCreateUser, createUser)
-router.route("/upload-score").post( createScore);
+router.route("/upload-score").post( getAuthenticated, createScore);
 router.route('/score').get( viewLeaderBoard);
 
 

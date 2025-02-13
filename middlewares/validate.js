@@ -9,9 +9,8 @@ const UserRegSchema =  Joi.object({
             allow: ['com', 'net']
         }
     }),
-    firstName : Joi.string().min(3).max(30).required(),
-    lastName: Joi.string().min(3).max(30).required(),
-    role: Joi.string().required(),
+    username : Joi.string().min(3).max(30).required(),
+   
     password: Joi.string().alphanum().min(7).required()
 
 });

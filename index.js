@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors")
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const passport = require("passport");
@@ -10,6 +11,7 @@ const mongoose = require("mongoose") // Assuming Sequelize models are here
 
 const app = express();
 
+app.use(cors())
 // Middleware
 dotenv.config();
 console.log(dotenv.config())
@@ -23,11 +25,13 @@ app.use(session({
     maxAge: 30 * 60 * 1000 // 30 minutes
   }
 }));
+
+require('./config/passport');
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Passport configuration
-require('./config/passport')(passport);
 
 // Database sync
 const db = () => {

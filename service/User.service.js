@@ -3,13 +3,15 @@ const ApiError = require('../utils/ApiError');
 const bcrypt = require("bcrypt");
 const User = require("../model/users.model")
 
-const createUser = async (userInfo) => {
+const createUser = async (req, res , next) => {
+  const userInfo = req.body;
     try {
       // Check if the email already exists in the database
       const ifEmailExists = await User.findOne({ email: userInfo.email } );
+      console.log(ifEmailExists)
       
       if (ifEmailExists) {
-        throw new ApiError('Email has already been registered');
+       return res.status(400).json({msg: 'Email has already been registered'});
       }
     
     // Hash the user's password before saving to the database
@@ -24,11 +26,16 @@ const createUser = async (userInfo) => {
 
     // Create the new user
     const newUser = await User.create(newUserInfo);
+    if(newUser !== null) {
+ return  res.status(200).json(newUser) 
+    } else {
+      return res.status(400).json({msg: "user creation unsuccessful"})
+    }
 
-    return newUser; // Return the created user object
+   // Return the created user object
   } catch (error) {
     // Handle errors such as validation or uniqueness constraint
-    throw error;
+  return res.status(500).json({msg: "here is the error" , error})
   }
 
   };
