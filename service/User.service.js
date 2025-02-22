@@ -65,11 +65,27 @@ const FetchUser = async (userId) => {
   return userDets; // Return the fetched user(s)
 };
 
+const refreshUser = async(req, res) => {
+  try {
+    console.log(req.isAuthenticated())
+if (req.isAuthenticated()) {
+  res.status(200).json({user : req.user})
+
+
+  } 
+}catch(err) {
+  console.error(err)
+    res.status(400).json(err)
+  }
+  
+
+
+}
 
 
 
 module.exports = {
-    createUser,
+    createUser, refreshUser,
    
   FetchUser
     

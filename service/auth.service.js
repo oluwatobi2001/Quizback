@@ -31,7 +31,7 @@ const googleCallback = async(req, res, next) => {
   passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
       // Successful authentication, redirect home.
-      res.redirect('/');
+      res.redirect('http://localost:3000/exam');
     }
 }
 const logout = (req, res) => {

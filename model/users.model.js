@@ -2,7 +2,7 @@
 
 
 const mongoose = require("mongoose");
-
+const findOrCreate = require("mongoose-findorcreate")
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -16,7 +16,7 @@ type: String
 },
 email: {
     type: String,
-    required: true
+   
 },
 password:  {
 type: String
@@ -32,5 +32,6 @@ createdAt: {
     default: Date.now()
 }}, {timestamps: true})
 
+UserSchema.plugin(findOrCreate)
 
 module.exports = mongoose.model("User", UserSchema)

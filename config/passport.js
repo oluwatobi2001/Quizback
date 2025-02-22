@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
  // Sequelize models are assumed to be here
 const User = require("../model/users.model") // Your User model
 const passport = require("passport")
+
+
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
   passport.use(
@@ -43,26 +45,43 @@ passport.use(new GoogleStrategy({
     ,
     callbackURL: "http://localhost:5000/v1/auth/google/callback"
   },
-  async function(accessToken, refreshToken, profile, done) {
+
+async (accessToken, refreshToken, profile, done) => {
+  try {
     console.log(profile)
-    const googleUser =  User.findOne({ googleId: profile.id })
-    if(!googleUser ) {
-      await User.create({googleId: profile.id, email:profile.emails[0].value, name: profile.displayName})
+    let user = await User.findOne({ googleId: profile.id });
+
+    if (!user) {
+      // Create a new user if not found
+      user = new User({
+        googleId: profile.id,
+        email: profile.emails[0].value, // Google returns an array of emails
+       username: profile.displayName
+      });
+
+      await user.save();
     }
-  
-  return done
+
+    return done(null, user);
+  } catch (err) {
+    return done(err, null);
   }
-))
+}
+));
+
 
   // Serialize user to store user ID in the session
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    console.log(user)
+    done(null, user._id);
   });
 
   // Deserialize user to retrieve user data by ID
   passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findById(id);
+      console.log("Deserializing User:", user);
+      console.log(user)
       done(null, user);
     } catch (err) {
       done(err);

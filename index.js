@@ -11,10 +11,11 @@ const mongoose = require("mongoose") // Assuming Sequelize models are here
 
 const app = express();
 
-app.use(cors())
+app.use(cors({origin: 'http://localhost:5173',  methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type,Authorizatiztion", credentials: true}))
 // Middleware
 dotenv.config();
-console.log(dotenv.config())
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(session({
@@ -35,7 +36,7 @@ app.use(passport.session());
 
 // Database sync
 const db = () => {
-  mongoose.connect(/* 'mongodb+srv://tobilyn77:tobilyn77@cluster0.q1jj1nh.mongodb.net/transcript?retryWrites=true&w=majority&appName=Cluster0' , */   'mongodb://localhost/bt' , {useNewUrlParser: true,
+  mongoose.connect( 'mongodb+srv://tobilyn77:tobilyn77@cluster0.q1jj1nh.mongodb.net/quizy?retryWrites=true&w=majority&appName=Cluster0'  , {useNewUrlParser: true,
 
   }).then(console.log("connected to mongo db")).catch((err) => console.log(err)); 
  

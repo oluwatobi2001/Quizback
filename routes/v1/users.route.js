@@ -4,7 +4,7 @@ const router = express.Router();
 const {UserRegSchema} = require('../../middlewares/validate')
 const getAuthenticated  = require("../../middlewares/auth");
 const { viewLeaderBoard, createScore } = require('../../service/Score.service');
-const { createUser } = require("../../service/User.service");
+const { createUser, refreshUser } = require("../../service/User.service");
 
 const validateCreateUser = (req, res, next) => {
     const { error } = UserRegSchema.validate(req.body);
@@ -19,6 +19,6 @@ const validateCreateUser = (req, res, next) => {
 router.route("/").post(validateCreateUser, createUser)
 router.route("/upload-score").post( getAuthenticated, createScore);
 router.route('/score').get( viewLeaderBoard);
-
+router.route('/').get(refreshUser)
 
 module.exports = router;
