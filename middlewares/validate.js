@@ -10,7 +10,7 @@ const UserRegSchema =  Joi.object({
         }
     }),
     username : Joi.string().min(3).max(30).required(),
-   
+   FullName: Joi.string(),
     password: Joi.string().alphanum().min(7).required()
 
 });
